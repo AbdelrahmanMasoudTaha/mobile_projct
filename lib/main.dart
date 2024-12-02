@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobile_app/models/prodect.dart';
 import 'package:mobile_app/screens/auth_screen.dart';
+import 'package:mobile_app/screens/product_screen.dart';
 import 'firebase_options.dart';
 
 import 'package:flutter/material.dart';
@@ -41,6 +43,6 @@ class MyApp extends StatelessWidget {
             //     return const AuthScreen();
             //   },
             // ),
-            const HomeScreen());
+            ProductScreen(product: dummyProducts[1]));
   }
 }

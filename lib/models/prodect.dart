@@ -3,22 +3,31 @@ class Product {
   final String descreption;
   final String imageLink;
   final Cateogry cateogry;
-  int rate = 0;
+  final double price;
+  double rate = 0;
   int numOfRatings = 0;
   int soldTimes = 0;
 
   Product(
       {required this.name,
       required this.descreption,
+      required this.price,
       required this.imageLink,
       required this.cateogry});
+  void rateTheProduct(int rate) {
+    double totalRate = this.rate * numOfRatings;
+    numOfRatings++;
+
+    this.rate = (rate + totalRate) / numOfRatings;
+  }
 }
 
-enum Cateogry { electronics, clothes, furniture, books, toysAndGames, sports }
+enum Cateogry { electronics, clothes, furniture, books, toys, sports }
 
 List<Product> dummyProducts = [
   Product(
     name: "iphone 12",
+    price: 120,
     cateogry: Cateogry.electronics,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
@@ -28,6 +37,7 @@ List<Product> dummyProducts = [
   Product(
     name: "iphone 12",
     cateogry: Cateogry.electronics,
+    price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     imageLink:
@@ -36,6 +46,7 @@ List<Product> dummyProducts = [
   Product(
     name: "iphone 12",
     cateogry: Cateogry.electronics,
+    price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     imageLink:
@@ -44,6 +55,7 @@ List<Product> dummyProducts = [
   Product(
     name: "iphone 12",
     cateogry: Cateogry.electronics,
+    price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     imageLink:
@@ -52,6 +64,7 @@ List<Product> dummyProducts = [
   Product(
     name: "iphone 12",
     cateogry: Cateogry.electronics,
+    price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     imageLink:
