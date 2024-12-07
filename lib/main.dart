@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app/models/prodect.dart';
 import 'package:mobile_app/screens/auth_screen.dart';
+import 'package:mobile_app/screens/nav_screen.dart';
 import 'package:mobile_app/screens/product_screen.dart';
 import 'firebase_options.dart';
 
 import 'package:flutter/material.dart';
 
+import 'screens/cart_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';
 
@@ -15,7 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,11 +41,11 @@ class MyApp extends StatelessWidget {
             //       return const SplashScreen();
             //     }
             //     if (snapshot.hasData) {
-            //       return const HomeScreen();
+            //       return const NavScreen();
             //     }
             //     return const AuthScreen();
             //   },
             // ),
-            ProductScreen(product: dummyProducts[1]));
+            const NavScreen());
   }
 }

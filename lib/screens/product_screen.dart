@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_app/models/prodect.dart';
 
-class ProductScreen extends StatefulWidget {
+import '../providers/cart_provider.dart';
+
+class ProductScreen extends ConsumerStatefulWidget {
   const ProductScreen({super.key, required this.product});
   final Product product;
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
+  ConsumerState<ProductScreen> createState() => _ProductScreenState();
 }
 
-class _ProductScreenState extends State<ProductScreen> {
+class _ProductScreenState extends ConsumerState<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,15 +156,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                           radius: 18,
                                           child: Text('$rate'),
                                         ),
-                                      )
-                                      // ElevatedButton(
-                                      //   onPressed: () {
-                                      //     Navigator.pop(context,
-                                      //         rate); // Return the selected number
-                                      //   },
-                                      //   child: Text('$rate'),
-                                      // ),
-                                      );
+                                      ));
                                 }),
                               ),
                             ),
@@ -203,6 +198,56 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Buy Now'),
+                          content: Text(
+                              'You Now Bought "${widget.product.name}" for ${widget.product.price} \$ '),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Buy Now'),
+                ),
+                const SizedBox(
+                  width: 40,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .read(cartProvider.notifier)
+                          .addProduct(widget.product);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.8),
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('Add to Cart')),
+              ],
+            )
           ],
         ),
       ),

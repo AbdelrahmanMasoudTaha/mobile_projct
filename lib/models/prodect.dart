@@ -35,7 +35,7 @@ List<Product> dummyProducts = [
         "https://www.smartcellular.ae/media/catalog/product/cache/44967087533007dde7246873a72eba7b/t/r/tr_9_1.jpg",
   ),
   Product(
-    name: "iphone 12",
+    name: "labtop",
     cateogry: Cateogry.electronics,
     price: 120,
     descreption:
@@ -44,8 +44,8 @@ List<Product> dummyProducts = [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKrYe0AQcXQzKYZ4oovVv8Lutl33o7ZM4HBQ&s",
   ),
   Product(
-    name: "iphone 12",
-    cateogry: Cateogry.electronics,
+    name: "shhos",
+    cateogry: Cateogry.clothes,
     price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
@@ -53,8 +53,8 @@ List<Product> dummyProducts = [
         "https://www.smartcellular.ae/media/catalog/product/cache/44967087533007dde7246873a72eba7b/t/r/tr_9_1.jpg",
   ),
   Product(
-    name: "iphone 12",
-    cateogry: Cateogry.electronics,
+    name: "toy",
+    cateogry: Cateogry.toys,
     price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
@@ -62,8 +62,8 @@ List<Product> dummyProducts = [
         "https://www.smartcellular.ae/media/catalog/product/cache/44967087533007dde7246873a72eba7b/t/r/tr_9_1.jpg",
   ),
   Product(
-    name: "iphone 12",
-    cateogry: Cateogry.electronics,
+    name: "toy2",
+    cateogry: Cateogry.toys,
     price: 120,
     descreption:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",

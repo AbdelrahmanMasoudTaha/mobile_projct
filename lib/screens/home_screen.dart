@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Product> showenProducts = dummyProducts;
   int? selectedCategory;
   final List<String> categortis = [
     'All',
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'clothes',
     'furniture',
     'books',
-    'toys and games',
+    'toys',
     'sports'
   ];
 
@@ -66,10 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          selectedCategory = index;
-                        });
-                        log(categortis[index]);
+                        if (index != 0) {
+                          setState(() {
+                            selectedCategory = index;
+                            showenProducts = dummyProducts
+                                .where((pro) =>
+                                    categortis[index].trim().toLowerCase() ==
+                                    pro.cateogry.name)
+                                .toList();
+                          });
+                        } else {
+                          setState(() {
+                            selectedCategory = index;
+                            showenProducts = dummyProducts;
+                          });
+                        }
                       },
                       child: Text(
                         categortis[index],
@@ -96,9 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (ctx, index) {
-                  return ProductCard(product: dummyProducts[index]);
+                  return ProductCard(product: showenProducts[index]);
                 },
-                itemCount: dummyProducts.length,
+                itemCount: showenProducts.length,
               ),
             )
           ],
