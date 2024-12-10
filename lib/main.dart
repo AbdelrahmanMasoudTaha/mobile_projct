@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app/models/prodect.dart';
+import 'package:mobile_app/screens/admin_home.dart';
+import 'package:mobile_app/screens/admin_screens/add_product_screen.dart';
 import 'package:mobile_app/screens/auth_screen.dart';
 import 'package:mobile_app/screens/nav_screen.dart';
 import 'package:mobile_app/screens/product_screen.dart';
@@ -46,6 +48,6 @@ class MyApp extends StatelessWidget {
             //     return const AuthScreen();
             //   },
             // ),
-            const NavScreen());
+            const HomeScreen());
   }
 }

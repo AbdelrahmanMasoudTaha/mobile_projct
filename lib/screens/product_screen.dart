@@ -87,7 +87,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   width: 7,
                 ),
                 Text(
-                  widget.product.cateogry.name,
+                  widget.product.category.name,
                   style: GoogleFonts.alef(
                     fontWeight: FontWeight.w700,
                     fontSize: 24,
@@ -206,16 +206,58 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
+                        final TextEditingController quantityController =
+                            TextEditingController();
+
                         return AlertDialog(
                           title: const Text('Buy Now'),
-                          content: Text(
-                              'You Now Bought "${widget.product.name}" for ${widget.product.price} \$ '),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text('Enter quantity'),
+                              const SizedBox(height: 8),
+                              TextField(
+                                controller: quantityController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  labelText: 'Quantity',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ],
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Close the dialog
                               },
-                              child: const Text('OK'),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                final quantity = quantityController.text;
+                                if (quantity.isNotEmpty) {
+                                  // Close the input dialog and show a confirmation dialog
+                                  Navigator.of(context).pop();
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text('Purchase Details'),
+                                      content: Text(
+                                          'You bought "${widget.product.name}" with a quantity of $quantity.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text('Confirm'),
                             ),
                           ],
                         );
@@ -233,19 +275,16 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   width: 40,
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      ref
-                          .read(cartProvider.notifier)
-                          .addProduct(widget.product);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.8),
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Add to Cart')),
+                  onPressed: () {
+                    ref.read(cartProvider.notifier).addProduct(widget.product);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Add to Cart'),
+                ),
               ],
             )
           ],

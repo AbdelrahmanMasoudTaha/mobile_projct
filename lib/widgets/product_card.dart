@@ -68,7 +68,7 @@ class ProductCard extends StatelessWidget {
               width: 40,
             ),
             Text(
-              'category : ${product.cateogry.name}',
+              'category : ${product.category.name}',
               textAlign: TextAlign.center,
               maxLines: 2,
               softWrap: true,

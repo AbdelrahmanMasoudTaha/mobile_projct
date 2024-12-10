@@ -18,7 +18,6 @@ class _AuthScreenState extends State<AuthScreen> {
   String _enterdEmail = '';
   String _enterdUsername = '';
   String _enterdPasswoud = '';
-  // File? _selectedImageFile;
   bool _isUploading = false;
 
   void _supmit() async {
