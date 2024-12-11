@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/prodect.dart';
+import 'package:mobile_app/screens/admin_screens/add_product_screen.dart';
 import 'package:mobile_app/size_config.dart';
 import 'package:mobile_app/widgets/my_input_field.dart';
 import 'package:mobile_app/widgets/product_card.dart';
@@ -18,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Product> showenProducts = dummyProducts;
+  List<Product> showenProducts = [];
   List<Product> allProducts = [];
   int? selectedCategory;
   bool _isLoaded = true;
@@ -49,21 +50,24 @@ class _HomeScreenState extends State<HomeScreen> {
           orElse: () => Category.books,
         );
         loadedItems.add(Product(
-          name: item.value['name'],
-          id: item.key,
-          descreption: item.value['descreption'],
-          price: item.value['price'],
-          imageLink: item.value['imageLink'],
-          numInStock: item.value['numInStock'],
-          category: category,
-        ));
+            soldTimes: item.value['soldTimes'],
+            name: item.value['name'],
+            id: item.key,
+            descreption: item.value['descreption'],
+            price: item.value['price'],
+            imageLink: item.value['imageLink'],
+            numInStock: item.value['numInStock'],
+            category: category,
+            rate: item.value['rate']));
         setState(() {
           allProducts = loadedItems;
+          showenProducts = allProducts;
           _isLoaded = false;
         });
       }
     } catch (err) {
       setState(() {
+        log(err.toString());
         _erorr = 'Something went wrong.';
         _isLoaded = false;
       });
@@ -117,7 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              FirebaseAuth.instance.signOut();
+              // FirebaseAuth.instance.signOut();
+
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AddProductScreen()));
             },
             icon: Icon(
               Icons.exit_to_app,

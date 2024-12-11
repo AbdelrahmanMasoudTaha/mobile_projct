@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_app/models/prodect.dart';
+import 'package:http/http.dart' as http;
 
 import '../providers/cart_provider.dart';
 
@@ -202,7 +206,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -234,27 +238,49 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               child: const Text('Cancel'),
                             ),
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 final quantity = quantityController.text;
                                 if (quantity.isNotEmpty) {
+                                  int quant = int.tryParse(quantity) ?? 0;
                                   // Close the input dialog and show a confirmation dialog
-                                  Navigator.of(context).pop();
-                                  showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                      title: const Text('Purchase Details'),
-                                      content: Text(
-                                          'You bought "${widget.product.name}" with a quantity of $quantity.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(ctx).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                  if (widget.product.numInStock < quant) {
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: const Text('NO Enough Products'),
+                                        content: Text(
+                                            'We hove not a $quant of the product"${widget.product.name}" .'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    userBuying(widget.product.id, quant);
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: const Text('Purchase Details'),
+                                        content: Text(
+                                            'You bought "${widget.product.name}" with a quantity of $quantity.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                               child: const Text('Confirm'),
@@ -291,5 +317,27 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
         ),
       ),
     );
+  }
+
+  void userBuying(String pid, int numToBuy) async {
+    final url = Uri.https('mobile-app-e112c-default-rtdb.firebaseio.com',
+        '/product-list/$pid.json');
+    try {
+      final response = await http.patch(
+        url,
+        body: json.encode({
+          'numInStock': widget.product.numInStock - numToBuy,
+          'soldTimes': widget.product.soldTimes + numToBuy
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        log("Product updated successfully!");
+      } else {
+        log("Failed to update product: ${response.statusCode}");
+      }
+    } catch (error) {
+      log("Error updating product: $error");
+    }
   }
 }

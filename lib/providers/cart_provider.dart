@@ -30,7 +30,9 @@ class CartNotifier extends StateNotifier<Map<Product, int>> {
             numInStock: 2,
             name: "iphone 12",
             price: 120,
+            rate: 4,
             category: Category.electronics,
+            soldTimes: 0,
             descreption:
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
             imageLink:
@@ -39,6 +41,8 @@ class CartNotifier extends StateNotifier<Map<Product, int>> {
           Product(
             id: 'dsafgaadfsgadfsg',
             name: "labtop",
+            rate: 4,
+            soldTimes: 0,
             numInStock: 2,
             category: Category.electronics,
             price: 120,

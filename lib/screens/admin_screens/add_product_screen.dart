@@ -31,16 +31,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final url = Uri.https(
           'mobile-app-e112c-default-rtdb.firebaseio.com', 'product-list.json');
       http
-          .post(url,
-              headers: {'Content-Type': 'application/json'},
-              body: json.encode({
-                'name': _enterdName,
-                'price': _enterdPrice,
-                'category': _selectedCategory.name,
-                'imageLink': _enterdImageLink,
-                'descreption': _enterdDescreption,
-                'numInStock': _enterdNumInStock
-              }))
+          .post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'name': _enterdName,
+          'price': _enterdPrice,
+          'category': _selectedCategory.name,
+          'imageLink': _enterdImageLink,
+          'descreption': _enterdDescreption,
+          'numInStock': _enterdNumInStock,
+          'rate': 0.0,
+          'soldTimes': 0,
+        }),
+      )
           .then((res) {
         //final Map<String, dynamic> resData = json.decode(res.body);
         if (res.statusCode == 200) {
