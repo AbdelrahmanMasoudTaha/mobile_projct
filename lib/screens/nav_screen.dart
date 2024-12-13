@@ -14,7 +14,7 @@ class _NavScreenState extends State<NavScreen> {
   int _selectedIndex = 0;
 
   // Pages for the BottomNavBar
-  final List<Widget> _pages = [
+  final List<Widget> _UserPages = [
     const HomeScreen(),
     const CartScreen(),
   ];
@@ -28,7 +28,7 @@ class _NavScreenState extends State<NavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: _UserPages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

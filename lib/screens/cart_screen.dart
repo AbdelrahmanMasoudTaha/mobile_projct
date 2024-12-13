@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:mobile_app/models/prodect.dart';
 import '../providers/cart_provider.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -100,14 +105,34 @@ class CartScreen extends ConsumerWidget {
 
                                         if (inputQuantity != null &&
                                             inputQuantity >= 0) {
-                                          ref
-                                              .read(cartProvider.notifier)
-                                              .setProductQuantity(
-                                                  product, inputQuantity);
+                                          if (product.numInStock <
+                                              inputQuantity) {
+                                            Navigator.of(context).pop();
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                title: const Text(
+                                                    'NO Enough Products'),
+                                                content: Text(
+                                                    'We hove not a $inputQuantity of the product"${product.name}" .'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(ctx).pop();
+                                                    },
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            ref
+                                                .read(cartProvider.notifier)
+                                                .setProductQuantity(
+                                                    product, inputQuantity);
+                                            Navigator.of(context).pop();
+                                          }
                                         }
-
-                                        Navigator.of(context)
-                                            .pop(); // Close dialog
                                       },
                                       child: const Text('Confirm'),
                                     ),
@@ -134,6 +159,13 @@ class CartScreen extends ConsumerWidget {
                         actions: [
                           TextButton(
                             onPressed: () {
+                              cartProducts.forEach((pro, times) {
+                                userBuying(pro, times);
+                              });
+                              ref
+                                  .read(cartProvider.notifier)
+                                  .removeAllProducts();
+
                               Navigator.of(ctx).pop();
                             },
                             child: const Text('OK'),
@@ -152,5 +184,27 @@ class CartScreen extends ConsumerWidget {
               ],
             ),
     );
+  }
+
+  void userBuying(Product product, int numToBuy) async {
+    final url = Uri.https('mobile-app-e112c-default-rtdb.firebaseio.com',
+        '/product-list/${product.id}.json');
+    try {
+      final response = await http.patch(
+        url,
+        body: json.encode({
+          'numInStock': product.numInStock - numToBuy,
+          'soldTimes': product.soldTimes + numToBuy
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        log("Product updated successfully!");
+      } else {
+        log("Failed to update product: ${response.statusCode}");
+      }
+    } catch (error) {
+      log("Error updating product: $error");
+    }
   }
 }

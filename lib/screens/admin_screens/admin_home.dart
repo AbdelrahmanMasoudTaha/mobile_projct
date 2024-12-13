@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_app/screens/admin_screens/add_product_screen.dart';
@@ -106,6 +107,13 @@ class _AdminHomeState extends State<AdminHome> {
     }
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const AddProductScreen();
+              }));
+            },
+            icon: const Icon(Icons.add)),
         title: Text(
           'Admin Home',
           style: GoogleFonts.alef(
@@ -116,12 +124,26 @@ class _AdminHomeState extends State<AdminHome> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const AddProductScreen();
-                }));
-              },
-              icon: const Icon(Icons.add))
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              //log(FirebaseAuth.instance.currentUser!.uid);
+            },
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _getData();
+              });
+            },
+            icon: Icon(
+              Icons.replay,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ],
       ),
       body: Container(

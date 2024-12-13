@@ -1,15 +1,21 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/models/prodect.dart';
-import 'package:mobile_app/screens/admin_screens/add_product_screen.dart';
 import 'package:mobile_app/size_config.dart';
 import 'package:mobile_app/widgets/my_input_field.dart';
 import 'package:mobile_app/widgets/product_card.dart';
 import 'package:http/http.dart' as http;
+
+import 'product_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -121,10 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // FirebaseAuth.instance.signOut();
-
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddProductScreen()));
+              FirebaseAuth.instance.signOut();
+              // log(FirebaseAuth.instance.currentUser!.uid);
             },
             icon: Icon(
               Icons.exit_to_app,
@@ -135,13 +139,44 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          const MyInputField(
-            hint: "Search",
-            widget: Icon(
-              Icons.search,
-              size: 30,
-              color: Colors.black54,
-            ),
+          Row(
+            children: [
+              const MyInputField(
+                hint: "Search",
+                widget: Icon(
+                  Icons.search,
+                  size: 30,
+                  color: Colors.black54,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  final XFile? pickedImage = await ImagePicker().pickImage(
+                      source: ImageSource.camera,
+                      maxWidth: 150,
+                      imageQuality: 50);
+
+                  if (pickedImage == null) {
+                    return;
+                  }
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => ProductScreen(product: allProducts[0]),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.camera,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.mic),
+                color: Colors.blue,
+                iconSize: 20,
+                onPressed: () {},
+              ),
+            ],
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),

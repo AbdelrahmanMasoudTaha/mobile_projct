@@ -303,6 +303,22 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                 ElevatedButton(
                   onPressed: () {
                     ref.read(cartProvider.notifier).addProduct(widget.product);
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Product Added to Cart'),
+                        content: Text(
+                            'You Add "${widget.product.name}" To Cart, Go to Cart to Modify Quantity'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(ctx).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

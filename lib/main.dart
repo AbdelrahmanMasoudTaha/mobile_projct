@@ -30,24 +30,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home:
-            //  StreamBuilder(
-            //   stream: FirebaseAuth.instance.authStateChanges(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const SplashScreen();
-            //     }
-            //     if (snapshot.hasData) {
-            //       return const NavScreen();
-            //     }
-            //     return const AuthScreen();
-            //   },
-            // ),
-            const AdminHome());
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SplashScreen();
+          }
+          if (snapshot.hasData) {
+            final authUser = FirebaseAuth.instance.currentUser!;
+            if (authUser.uid == 'i6yYC1h97bfdysjuBVX0JIpzN6p1') {
+              return const AdminHome();
+            } else {
+              return const NavScreen();
+            }
+          }
+          return const AuthScreen();
+        },
+      ),
+    );
   }
 }
