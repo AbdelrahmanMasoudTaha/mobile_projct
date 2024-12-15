@@ -17,12 +17,24 @@ class CartScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cart'),
+        title: Text(
+          'Cart',
+          style: GoogleFonts.alef(
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
+        ),
         centerTitle: true,
       ),
       body: cartProducts.isEmpty
-          ? const Center(
-              child: Text('Your cart is empty'),
+          ? Center(
+              child: Text(
+                'Your cart is empty',
+                style: GoogleFonts.alef(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
             )
           : Column(
               children: [
@@ -51,19 +63,35 @@ class CartScreen extends ConsumerWidget {
                         ),
                         title: Text(
                           product.name,
-                          style: TextStyle(
+                          style: GoogleFonts.alef(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.primary,
                           ),
+                          // style: TextStyle(
+                          //   fontWeight: FontWeight.w600,
+                          //   fontSize: 20,
+                          // ),
                         ),
                         subtitle: Row(
                           children: [
-                            Text('Quantity: $quantity'),
+                            Text(
+                              'Quantity: $quantity',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
                             const SizedBox(
                               width: 12,
                             ),
-                            Text('Price of one: ${product.price} \$'),
+                            Text(
+                              'Price of one: ${product.price} \$',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
                           ],
                         ),
                         trailing: IconButton(
@@ -80,8 +108,13 @@ class CartScreen extends ConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title:
-                                      Text('Set Quantity for ${product.name}'),
+                                  title: Text(
+                                    'Set Quantity for ${product.name}',
+                                    style: GoogleFonts.alef(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                    ),
+                                  ),
                                   content: TextField(
                                     controller: quantityController,
                                     keyboardType: TextInputType.number,
@@ -96,7 +129,13 @@ class CartScreen extends ConsumerWidget {
                                         Navigator.of(context)
                                             .pop(); // Close dialog
                                       },
-                                      child: const Text('Cancel'),
+                                      child: Text(
+                                        'Cancel',
+                                        style: GoogleFonts.alef(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                        ),
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -111,16 +150,33 @@ class CartScreen extends ConsumerWidget {
                                             showDialog(
                                               context: context,
                                               builder: (ctx) => AlertDialog(
-                                                title: const Text(
-                                                    'NO Enough Products'),
+                                                title: Text(
+                                                  'NO Enough Products',
+                                                  style: GoogleFonts.alef(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
                                                 content: Text(
-                                                    'We hove not a $inputQuantity of the product"${product.name}" .'),
+                                                  'We hove not a $inputQuantity of the product"${product.name}" .',
+                                                  style: GoogleFonts.alef(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
                                                       Navigator.of(ctx).pop();
                                                     },
-                                                    child: const Text('OK'),
+                                                    child: Text(
+                                                      'OK',
+                                                      style: GoogleFonts.alef(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -134,7 +190,13 @@ class CartScreen extends ConsumerWidget {
                                           }
                                         }
                                       },
-                                      child: const Text('Confirm'),
+                                      child: Text(
+                                        'Confirm',
+                                        style: GoogleFonts.alef(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 );
@@ -153,9 +215,20 @@ class CartScreen extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: const Text('Purchase Details'),
+                        title: Text(
+                          'Purchase Details',
+                          style: GoogleFonts.alef(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                          ),
+                        ),
                         content: Text(
-                            'You bought all product in the cart with a prixe of "$totalCoat \$" .'),
+                          'You bought all product in the cart with a prixe of "$totalCoat \$" .',
+                          style: GoogleFonts.alef(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                          ),
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
@@ -168,7 +241,13 @@ class CartScreen extends ConsumerWidget {
 
                               Navigator.of(ctx).pop();
                             },
-                            child: const Text('OK'),
+                            child: Text(
+                              'OK',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -179,8 +258,17 @@ class CartScreen extends ConsumerWidget {
                         Theme.of(context).colorScheme.primary.withOpacity(0.8),
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Buy All Now'),
+                  child: Text(
+                    'Buy All Now',
+                    style: GoogleFonts.alef(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
     );

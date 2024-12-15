@@ -81,11 +81,24 @@ class _AdminHomeState extends State<AdminHome> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _content = const Center(
-      child: Text('No Items Added Yet'),
+    Widget _content = Center(
+      child: Text(
+        'No Items Added Yet',
+        style: GoogleFonts.alef(
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+        ),
+      ),
     );
     if (_erorr != null) {
-      _content = Center(child: Text(_erorr!));
+      _content = Center(
+          child: Text(
+        _erorr!,
+        style: GoogleFonts.alef(
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+        ),
+      ));
     }
     if (_isLoaded) {
       _content = const Center(
@@ -181,7 +194,11 @@ class _AdminHomeState extends State<AdminHome> {
                     ),
                     Text(
                       'Sold Times : ${pro.soldTimes}',
-                      style: const TextStyle(color: Colors.white),
+                      style: GoogleFonts.alef(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
                     )
                   ],
                 ),

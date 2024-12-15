@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import '../../models/prodect.dart';
@@ -50,7 +51,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
         if (res.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('A product with name $_enterdName is added'),
+              content: Text(
+                'A product with name $_enterdName is added',
+                style: GoogleFonts.alef(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
+              ),
             ),
           );
         }
@@ -173,7 +180,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         for (final category in Category.values)
                           DropdownMenuItem(
                             value: category,
-                            child: Text(category.name),
+                            child: Text(
+                              category.name,
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
                           )
                       ],
                       value: _selectedCategory,
@@ -198,7 +211,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           : () {
                               _formkey.currentState!.reset();
                             },
-                      child: const Text('Reset')),
+                      child: Text(
+                        'Reset',
+                        style: GoogleFonts.alef(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18,
+                        ),
+                      )),
                   const SizedBox(
                     width: 6,
                   ),
@@ -210,7 +229,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               height: 20,
                               child: CircularProgressIndicator(),
                             )
-                          : const Text('Add Item'))
+                          : Text(
+                              'Add Item',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ))
                 ],
               )
             ],

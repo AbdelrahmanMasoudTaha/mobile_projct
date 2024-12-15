@@ -40,7 +40,12 @@ class _AdminProductCardState extends State<AdminProductCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                    'Number in the Stock : ${add == null ? widget.product.numInStock : add! + widget.product.numInStock}'),
+                  'Number in the Stock : ${add == null ? widget.product.numInStock : add! + widget.product.numInStock}',
+                  style: GoogleFonts.alef(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18,
+                  ),
+                ),
                 IconButton(
                   onPressed: () async {
                     showDialog(
@@ -50,11 +55,23 @@ class _AdminProductCardState extends State<AdminProductCard> {
                             TextEditingController();
 
                         return AlertDialog(
-                          title: const Text('Modify the stock'),
+                          title: Text(
+                            'Modify the stock',
+                            style: GoogleFonts.alef(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                            ),
+                          ),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text('Enter quantity'),
+                              Text(
+                                'Enter quantity',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                               const SizedBox(height: 8),
                               TextField(
                                 controller: quantityController,
@@ -71,7 +88,13 @@ class _AdminProductCardState extends State<AdminProductCard> {
                               onPressed: () {
                                 Navigator.of(context).pop(); // Close the dialog
                               },
-                              child: const Text('Cancel'),
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                             TextButton(
                               onPressed: () async {
@@ -84,9 +107,20 @@ class _AdminProductCardState extends State<AdminProductCard> {
                                   showDialog(
                                     context: context,
                                     builder: (ctx) => AlertDialog(
-                                      title: const Text('Stock Modified'),
+                                      title: Text(
+                                        'Stock Modified',
+                                        style: GoogleFonts.alef(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                        ),
+                                      ),
                                       content: Text(
-                                          'You add "${widget.product.name}" with a quantity of $quantity.'),
+                                        'You add "${widget.product.name}" with a quantity of $quantity.',
+                                        style: GoogleFonts.alef(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                        ),
+                                      ),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
@@ -95,14 +129,26 @@ class _AdminProductCardState extends State<AdminProductCard> {
                                               add = quant;
                                             });
                                           },
-                                          child: const Text('OK'),
+                                          child: Text(
+                                            'OK',
+                                            style: GoogleFonts.alef(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 18,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   );
                                 }
                               },
-                              child: const Text('Confirm'),
+                              child: Text(
+                                'Confirm',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ],
                         );
@@ -113,7 +159,13 @@ class _AdminProductCardState extends State<AdminProductCard> {
                 ),
               ],
             ),
-            Text('Rate : ${widget.product.rate.toStringAsFixed(1)}'),
+            Text(
+              'User Rateing : ${widget.product.rate.toStringAsFixed(1)}',
+              style: GoogleFonts.alef(
+                fontWeight: FontWeight.w400,
+                fontSize: 18,
+              ),
+            ),
           ],
         ),
       ),

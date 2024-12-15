@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -19,6 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String _enterdUsername = '';
   String _enterdPasswoud = '';
   bool _isUploading = false;
+  DateTime? _selectedDate = DateTime.now();
 
   void _supmit() async {
     bool vaild = _formKey.currentState!.validate();
@@ -83,7 +87,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   vertical: 30,
                 ),
                 width: 200,
-                child: Image.asset('lib/assets/cart.png'),
+                child: Image.asset('lib/assets/grocery-cart.png'),
               ),
               Card(
                 margin: const EdgeInsets.all(20),
@@ -101,6 +105,40 @@ class _AuthScreenState extends State<AuthScreen> {
                           //     },
                           //   ),
                           if (!_islogin)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Choose Your Date of Birth',
+                                  style: GoogleFonts.alef(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    final now = DateTime.now();
+                                    final DateTime? pickedDate =
+                                        await showDatePicker(
+                                            context: context,
+                                            firstDate: DateTime(now.year - 40,
+                                                now.month, now.day),
+                                            initialDate: DateTime(now.year - 15,
+                                                now.month, now.day),
+                                            lastDate: now);
+                                    setState(() {
+                                      _selectedDate = pickedDate;
+                                      log(pickedDate.toString());
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.calendar_month,
+                                    size: 30,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          if (!_islogin)
                             TextFormField(
                               validator: (value) {
                                 if (value == null || value.trim().length < 4) {
@@ -110,12 +148,17 @@ class _AuthScreenState extends State<AuthScreen> {
                               },
                               onSaved: (newValue) =>
                                   _enterdUsername = newValue!,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 label: Text(
                                   'Username',
+                                  style: GoogleFonts.alef(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                             ),
+
                           TextFormField(
                             validator: (value) {
                               if (value == null ||
@@ -126,9 +169,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               return null;
                             },
                             onSaved: (newValue) => _enterdEmail = newValue!,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               label: Text(
                                 'Email',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                             keyboardType: TextInputType.emailAddress,
@@ -143,9 +190,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               return null;
                             },
                             onSaved: (newValue) => _enterdPasswoud = newValue!,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               label: Text(
                                 'Password',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                             obscureText: true,
@@ -161,7 +212,13 @@ class _AuthScreenState extends State<AuthScreen> {
                                   backgroundColor: Theme.of(context)
                                       .colorScheme
                                       .primaryContainer),
-                              child: Text(_islogin ? 'Login' : 'Sign Up'),
+                              child: Text(
+                                _islogin ? 'Login' : 'Sign Up',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           if (!_isUploading)
                             TextButton(
@@ -170,9 +227,15 @@ class _AuthScreenState extends State<AuthScreen> {
                                   _islogin = !_islogin;
                                 });
                               },
-                              child: Text(_islogin
-                                  ? 'Create an account'
-                                  : 'I allredy have an account'),
+                              child: Text(
+                                _islogin
+                                    ? 'Create an account'
+                                    : 'I allredy have an account',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                         ],
                       ),

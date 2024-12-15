@@ -27,7 +27,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
           style: GoogleFonts.alef(
             fontWeight: FontWeight.w600,
             fontSize: 30,
-            //color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),
@@ -142,7 +141,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text('Rate This Product'),
+                            title: Text(
+                              'Rate This Product',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
                             content: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
@@ -158,7 +163,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                         },
                                         child: CircleAvatar(
                                           radius: 18,
-                                          child: Text('$rate'),
+                                          child: Text(
+                                            '$rate',
+                                            style: GoogleFonts.alef(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 18,
+                                            ),
+                                          ),
                                         ),
                                       ));
                                 }),
@@ -174,7 +185,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                         });
                       }
                     },
-                    child: const Text('Rate This Product'))
+                    child: Text(
+                      'Rate This Product',
+                      style: GoogleFonts.alef(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+                    ))
               ],
             ),
             const SizedBox(
@@ -214,11 +231,23 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                             TextEditingController();
 
                         return AlertDialog(
-                          title: const Text('Buy Now'),
+                          title: Text(
+                            'Buy Now',
+                            style: GoogleFonts.alef(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                            ),
+                          ),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text('Enter quantity'),
+                              Text(
+                                'Enter quantity',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                               const SizedBox(height: 8),
                               TextField(
                                 controller: quantityController,
@@ -235,7 +264,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               onPressed: () {
                                 Navigator.of(context).pop(); // Close the dialog
                               },
-                              child: const Text('Cancel'),
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                             TextButton(
                               onPressed: () async {
@@ -248,15 +283,32 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                     showDialog(
                                       context: context,
                                       builder: (ctx) => AlertDialog(
-                                        title: const Text('NO Enough Products'),
+                                        title: Text(
+                                          'NO Enough Products',
+                                          style: GoogleFonts.alef(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                         content: Text(
-                                            'We hove not a $quant of the product"${widget.product.name}" .'),
+                                          'We hove not a $quant of the product"${widget.product.name}" .',
+                                          style: GoogleFonts.alef(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(ctx).pop();
                                             },
-                                            child: const Text('OK'),
+                                            child: Text(
+                                              'OK',
+                                              style: GoogleFonts.alef(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -267,15 +319,32 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                     showDialog(
                                       context: context,
                                       builder: (ctx) => AlertDialog(
-                                        title: const Text('Purchase Details'),
+                                        title: Text(
+                                          'Purchase Details',
+                                          style: GoogleFonts.alef(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                         content: Text(
-                                            'You bought "${widget.product.name}" with a quantity of $quantity.'),
+                                          'You bought "${widget.product.name}" with a quantity of $quantity.',
+                                          style: GoogleFonts.alef(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(ctx).pop();
                                             },
-                                            child: const Text('OK'),
+                                            child: Text(
+                                              'OK',
+                                              style: GoogleFonts.alef(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -283,7 +352,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   }
                                 }
                               },
-                              child: const Text('Confirm'),
+                              child: Text(
+                                'Confirm',
+                                style: GoogleFonts.alef(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ],
                         );
@@ -295,7 +370,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                         Theme.of(context).colorScheme.primary.withOpacity(0.8),
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Buy Now'),
+                  child: Text(
+                    'Buy Now',
+                    style: GoogleFonts.alef(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   width: 40,
@@ -306,15 +387,32 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: const Text('Product Added to Cart'),
+                        title: Text(
+                          'Product Added to Cart',
+                          style: GoogleFonts.alef(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                          ),
+                        ),
                         content: Text(
-                            'You Add "${widget.product.name}" To Cart, Go to Cart to Modify Quantity'),
+                          'You Add "${widget.product.name}" To Cart, Go to Cart to Modify Quantity',
+                          style: GoogleFonts.alef(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                          ),
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(ctx).pop();
                             },
-                            child: const Text('OK'),
+                            child: Text(
+                              'OK',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -325,7 +423,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                         Theme.of(context).colorScheme.primary.withOpacity(0.8),
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Add to Cart'),
+                  child: Text(
+                    'Add to Cart',
+                    style: GoogleFonts.alef(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ],
             )

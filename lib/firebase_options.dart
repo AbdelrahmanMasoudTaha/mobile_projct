@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
+
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -48,6 +49,7 @@ class DefaultFirebaseOptions {
     authDomain: 'mobile-app-e112c.firebaseapp.com',
     storageBucket: 'mobile-app-e112c.firebasestorage.app',
   );
+  //
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyA_HkFSJ8oUcAXl8SDTL2fBR78e84TQ03o',

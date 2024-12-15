@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_app/screens/product_screen.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../models/prodect.dart';
@@ -48,20 +49,19 @@ class ProductCard extends StatelessWidget {
                       maxLines: 2,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: GoogleFonts.alef(
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
                         color: Colors.white,
+                        fontSize: 20,
                       ),
                     ),
                   ))
             ]),
             Text(
               'rate : ${product.rate.toStringAsFixed(1)}',
-              style: const TextStyle(
+              style: GoogleFonts.alef(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
-                //  color: Colors.white,
               ),
             ),
             const SizedBox(
@@ -73,10 +73,9 @@ class ProductCard extends StatelessWidget {
               maxLines: 2,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: GoogleFonts.alef(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
-                // color: Colors.white,
               ),
             ),
           ],

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -100,11 +101,24 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    Widget _content = const Center(
-      child: Text('No Items Added Yet'),
+    Widget _content = Center(
+      child: Text(
+        'No Items Added Yet',
+        style: GoogleFonts.alef(
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+        ),
+      ),
     );
     if (_erorr != null) {
-      _content = Center(child: Text(_erorr!));
+      _content = Center(
+          child: Text(
+        _erorr!,
+        style: GoogleFonts.alef(
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+        ),
+      ));
     }
     if (_isLoaded) {
       _content = const Center(
@@ -123,7 +137,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shoping Home'),
+        title: Text(
+          'Shoping Home',
+          style: GoogleFonts.alef(
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -171,9 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.mic),
-                color: Colors.blue,
-                iconSize: 20,
+                icon: const Icon(Icons.mic),
+                color: Theme.of(context).colorScheme.primary,
+                iconSize: 30,
                 onPressed: () {},
               ),
             ],
@@ -207,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                       categortis[index],
-                      style: TextStyle(
+                      style: GoogleFonts.alef(
                         fontWeight: FontWeight.w600,
                         fontSize: 20,
                         color: selectedCategory == null || selectedCategory == 0
@@ -216,6 +236,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? Theme.of(context).colorScheme.primary
                                 : Colors.grey,
                       ),
+                      // style: TextStyle(
+                      //   fontWeight: FontWeight.w600,
+                      //   fontSize: 20,
+
+                      // ),
                     ),
                   ),
                 );
