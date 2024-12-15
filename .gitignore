@@ -1,3 +1,4 @@
+lib/firebase_options.dart
 # Miscellaneous
 *.class
 *.log
@@ -42,4 +43,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-firebase_options.dart
+
