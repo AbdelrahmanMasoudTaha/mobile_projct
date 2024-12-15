@@ -44,6 +44,11 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_riverpod: ^2.6.1
   http: ^1.2.2
+  speech_to_text: ^7.0.0
+  # record: ^5.2.0
+  # path: ^1.9.0
+  # path_provider: ^2.1.5
+
 
 dev_dependencies:
   flutter_test:

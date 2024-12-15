@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/models/prodect.dart';
@@ -15,6 +16,7 @@ import 'package:mobile_app/size_config.dart';
 import 'package:mobile_app/widgets/my_input_field.dart';
 import 'package:mobile_app/widgets/product_card.dart';
 import 'package:http/http.dart' as http;
+//import 'package:record/record.dart';
 
 import 'product_screen.dart';
 
@@ -31,6 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
   int? selectedCategory;
   bool _isLoaded = true;
   String? _erorr;
+
+  String? audioPath;
+
+  //final AudioRecorder _record = AudioRecorder();
+  bool _isListening = false;
+  stt.SpeechToText _speech = stt.SpeechToText();
+  String _RecorededText = '';
+
+  final TextEditingController controller = TextEditingController();
 
   void _getData() async {
     final url = Uri.https(
@@ -96,6 +107,50 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     _getData();
+    controller.addListener(_filterSearchResults);
+  }
+
+  void _filterSearchResults() {
+    setState(() {
+      showenProducts = allProducts
+          .where((pro) =>
+              pro.name.toLowerCase().contains(controller.text.toLowerCase()))
+          .toList();
+    });
+  }
+
+  void listen() async {
+    if (!_isListening) {
+      bool available = await _speech.initialize();
+      if (available) {
+        setState(() {
+          _isListening = true;
+        });
+        _speech.listen(onResult: (val) {
+          setState(() {
+            _RecorededText = val.recognizedWords;
+
+            showenProducts = allProducts
+                .where((pro) => pro.name
+                    .toLowerCase()
+                    .contains(_RecorededText.toLowerCase()))
+                .toList();
+          });
+        });
+      }
+    } else {
+      setState(() {
+        _isListening = false;
+      });
+      _speech.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override
@@ -161,12 +216,59 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Row(
             children: [
-              const MyInputField(
-                hint: "Search",
-                widget: Icon(
-                  Icons.search,
-                  size: 30,
-                  color: Colors.black54,
+              // MyInputField(
+              //   hint: _text,
+              //   widget: const Icon(
+              //     Icons.search,
+              //     size: 30,
+              //     color: Colors.black54,
+              //   ),
+              // ),
+              Expanded(
+                child: Container(
+                  //padding: EdgeInsets.all(20),
+                  margin: const EdgeInsets.all(14),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 14),
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey)),
+                    height: 52,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: controller,
+                            autofocus: false,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            // readOnly: readOnly,
+                            decoration: InputDecoration(
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(width: 0),
+                              ),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(width: 0),
+                              ),
+                              hintText: _RecorededText == ''
+                                  ? 'Search By Name'
+                                  : _RecorededText,
+                              hintStyle: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // search icon here
+                      ],
+                    ),
+                  ),
                 ),
               ),
               IconButton(
@@ -194,7 +296,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Icons.mic),
                 color: Theme.of(context).colorScheme.primary,
                 iconSize: 30,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    listen();
+                  });
+                },
               ),
             ],
           ),
