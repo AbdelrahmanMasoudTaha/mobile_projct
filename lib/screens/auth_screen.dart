@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +21,6 @@ class _AuthScreenState extends State<AuthScreen> {
   String _enterdUsername = '';
   String _enterdPasswoud = '';
   bool _isUploading = false;
-  DateTime? _selectedDate = DateTime.now();
 
   void _supmit() async {
     bool vaild = _formKey.currentState!.validate();
@@ -127,7 +125,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                                 now.month, now.day),
                                             lastDate: now);
                                     setState(() {
-                                      _selectedDate = pickedDate;
                                       log(pickedDate.toString());
                                     });
                                   },

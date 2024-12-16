@@ -1,22 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/models/prodect.dart';
 import 'package:mobile_app/size_config.dart';
-import 'package:mobile_app/widgets/my_input_field.dart';
 import 'package:mobile_app/widgets/product_card.dart';
 import 'package:http/http.dart' as http;
-//import 'package:record/record.dart';
 
 import 'product_screen.dart';
 
@@ -104,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getData();
     controller.addListener(_filterSearchResults);

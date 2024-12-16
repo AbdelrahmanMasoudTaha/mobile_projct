@@ -23,9 +23,9 @@ class _AdminHomeState extends State<AdminHome> {
   int? selectedCategory;
   bool _isLoaded = true;
   String? _erorr;
+  final url = Uri.https(
+      'mobile-app-e112c-default-rtdb.firebaseio.com', 'product-list.json');
   void _getData() async {
-    final url = Uri.https(
-        'mobile-app-e112c-default-rtdb.firebaseio.com', 'product-list.json');
     try {
       final http.Response res = await http.get(url);
       if (res.statusCode >= 400) {
@@ -72,6 +72,21 @@ class _AdminHomeState extends State<AdminHome> {
     }
   }
 
+  Future<void> _deleteProduct(String productId) async {
+    try {
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        log('Product deleted successfully');
+      } else {
+        log('Failed to delete product: ${response.statusCode}');
+        log('Error: ${response.body}');
+      }
+    } catch (error) {
+      log('An error occurred: $error');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -112,7 +127,34 @@ class _AdminHomeState extends State<AdminHome> {
       _content = Expanded(
         child: ListView.builder(
           itemBuilder: (ctx, index) {
-            return AdminProductCard(product: allProducts[index]);
+            Product product = allProducts[index];
+            return GestureDetector(
+              onLongPress: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Delete Product'),
+                    content: Text(
+                        'Are you sure you want to delete ${product.name}?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.pop(context), // Dismiss dialog
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Dismiss dialog
+                          _deleteProduct(product.id); // Call delete function
+                        },
+                        child: Text('Delete'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: AdminProductCard(product: product),
+            );
           },
           itemCount: allProducts.length,
         ),
@@ -150,6 +192,7 @@ class _AdminHomeState extends State<AdminHome> {
             onPressed: () {
               setState(() {
                 _getData();
+                log(allProducts.length.toString());
               });
             },
             icon: Icon(
