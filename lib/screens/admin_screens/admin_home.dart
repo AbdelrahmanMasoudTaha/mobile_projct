@@ -85,6 +85,21 @@ class _AdminHomeState extends State<AdminHome> {
     }
   }
 
+  Future<void> _deleteProduct(String productId) async {
+    try {
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        log('Product deleted successfully');
+      } else {
+        log('Failed to delete product: ${response.statusCode}');
+        log('Error: ${response.body}');
+      }
+    } catch (error) {
+      log('An error occurred: $error');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
