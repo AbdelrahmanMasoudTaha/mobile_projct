@@ -57,6 +57,8 @@ class Product {
 
 enum Category { electronics, clothes, furniture, books, toys, sports }
 
+
+
 // List<Product> dummyProducts = [
 //   Product(
 //     id: 'dsafgaadfsgadfsggkuiyuk',

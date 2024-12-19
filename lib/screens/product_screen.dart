@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_app/models/prodect.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/models/transaction.dart';
 
 import '../providers/cart_provider.dart';
 
@@ -315,6 +317,12 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                     );
                                   } else {
                                     userBuying(widget.product.id, quant);
+                                    userTranscation(
+                                        DateTime.now(),
+                                        FirebaseAuth
+                                            .instance.currentUser!.email!,
+                                        widget.product.name,
+                                        quant);
                                     Navigator.of(context).pop();
                                     showDialog(
                                       context: context,
@@ -442,6 +450,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   void userBuying(String pid, int numToBuy) async {
     final url = Uri.https('mobile-app-e112c-default-rtdb.firebaseio.com',
         '/product-list/$pid.json');
+
     try {
       final response = await http.patch(
         url,
@@ -459,5 +468,31 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     } catch (error) {
       log("Error updating product: $error");
     }
+  }
+
+  void userTranscation(
+    DateTime date,
+    String userEmail,
+    String productName,
+    int quantity,
+  ) {
+    final url = Uri.https('mobile-app-e112c-default-rtdb.firebaseio.com',
+        'transaction-list.json');
+    http
+        .post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'productName': productName,
+        'userEmail': userEmail,
+        'quantity': quantity,
+        'date': date.toIso8601String(),
+      }),
+    )
+        .then((res) {
+      if (res.statusCode == 200) {
+        log('transaction done');
+      }
+    });
   }
 }

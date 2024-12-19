@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_app/screens/admin_screens/add_product_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/screens/admin_screens/all_products_screen.dart';
 import 'package:mobile_app/widgets/admin_product_card.dart';
+import 'package:mobile_app/widgets/chart.dart';
 
 import '../../models/prodect.dart';
 
@@ -19,13 +21,21 @@ class AdminHome extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHome> {
   List<Product> allProducts = [];
-  List<Product> Top3Products = [];
+  List<Product> top5Products = [];
   int? selectedCategory;
   bool _isLoaded = true;
+  int maxSold = 0;
+  List<Color> colors = [
+    Color.fromARGB(255, 36, 179, 84),
+    Color.fromARGB(255, 15, 143, 148),
+    Color.fromARGB(255, 29, 112, 180),
+    Color.fromARGB(255, 77, 55, 202),
+    Color.fromARGB(255, 154, 53, 185),
+  ];
   String? _erorr;
+  final url = Uri.https(
+      'mobile-app-e112c-default-rtdb.firebaseio.com', 'product-list.json');
   void _getData() async {
-    final url = Uri.https(
-        'mobile-app-e112c-default-rtdb.firebaseio.com', 'product-list.json');
     try {
       final http.Response res = await http.get(url);
       if (res.statusCode >= 400) {
@@ -47,7 +57,8 @@ class _AdminHomeState extends State<AdminHome> {
           (e) => e.name == item.value["category"],
           orElse: () => Category.books,
         );
-        loadedItems.add(Product(
+        loadedItems.add(
+          Product(
             soldTimes: item.value['soldTimes'],
             name: item.value['name'],
             id: item.key,
@@ -56,7 +67,9 @@ class _AdminHomeState extends State<AdminHome> {
             imageLink: item.value['imageLink'],
             numInStock: item.value['numInStock'],
             category: category,
-            rate: item.value['rate']));
+            rate: double.tryParse(item.value['rate'].toString()) ?? 0.0,
+          ),
+        );
         setState(() {
           allProducts = loadedItems;
 
@@ -107,61 +120,17 @@ class _AdminHomeState extends State<AdminHome> {
     }
     if (allProducts.isNotEmpty) {
       allProducts.sort((a, b) => b.soldTimes.compareTo(a.soldTimes));
-      Top3Products = allProducts.take(3).toList();
+      top5Products = allProducts.take(5).toList();
+      maxSold = top5Products[0].soldTimes;
+      List<int> topTimes = [];
+      for (Product p in top5Products) {
+        topTimes.add(p.soldTimes);
+      }
 
-      _content = Expanded(
-        child: ListView.builder(
-          itemBuilder: (ctx, index) {
-            return AdminProductCard(product: allProducts[index]);
-          },
-          itemCount: allProducts.length,
-        ),
-      );
-    }
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const AddProductScreen();
-              }));
-            },
-            icon: const Icon(Icons.add)),
-        title: Text(
-          'Admin Home',
-          style: GoogleFonts.alef(
-            fontWeight: FontWeight.w600,
-            fontSize: 25,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              //log(FirebaseAuth.instance.currentUser!.uid);
-            },
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _getData();
-              });
-            },
-            icon: Icon(
-              Icons.replay,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
+      _content = Container(
         padding: const EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Best Sellers',
@@ -171,16 +140,17 @@ class _AdminHomeState extends State<AdminHome> {
                 //color: Theme.of(context).colorScheme.primary,
               ),
             ),
+            Chart(topSoldTimes: topTimes, colors: colors),
             const SizedBox(
               height: 7,
             ),
-            for (Product pro in Top3Products)
+            for (Product pro in top5Products)
               Container(
                 margin: const EdgeInsets.all(5),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.blueGrey),
+                    color: colors[top5Products.indexOf(pro)]),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -206,18 +176,75 @@ class _AdminHomeState extends State<AdminHome> {
             const SizedBox(
               height: 15,
             ),
-            Text(
-              'All Products',
-              style: GoogleFonts.alef(
-                fontWeight: FontWeight.w600,
-                fontSize: 30,
-                // color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            _content,
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return AllProductsScreen(allProducts: allProducts);
+                  }));
+                },
+                child: Text(
+                  'Go To All Products ',
+                  style: GoogleFonts.alef(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
+                  ),
+                ))
           ],
         ),
-      ),
-    );
+      );
+    }
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const AddProductScreen();
+                }));
+              },
+              icon: const Icon(Icons.add)),
+          title: Text(
+            'Admin Home',
+            style: GoogleFonts.alef(
+              fontWeight: FontWeight.w600,
+              fontSize: 25,
+            ),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                //log(FirebaseAuth.instance.currentUser!.uid);
+              },
+              icon: Icon(
+                Icons.exit_to_app,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const AddProductScreen();
+                }));
+              },
+              icon: Icon(
+                Icons.add_business_outlined,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _getData();
+                });
+              },
+              icon: Icon(
+                Icons.replay,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+        body: _content);
   }
 }

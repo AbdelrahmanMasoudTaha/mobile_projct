@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class CartScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartProducts = ref.watch(cartProvider);
+    final double totalCost = ref.read(cartProvider.notifier).totalCost();
 
     return Scaffold(
       appBar: AppBar(
@@ -208,63 +210,81 @@ class CartScreen extends ConsumerWidget {
                     }).toList(),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    final double totalCoat =
-                        ref.read(cartProvider.notifier).totalCost();
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: Text(
-                          'Purchase Details',
-                          style: GoogleFonts.alef(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 22,
-                          ),
-                        ),
-                        content: Text(
-                          'You bought all product in the cart with a prixe of "$totalCoat \$" .',
-                          style: GoogleFonts.alef(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              cartProducts.forEach((pro, times) {
-                                userBuying(pro, times);
-                              });
-                              ref
-                                  .read(cartProvider.notifier)
-                                  .removeAllProducts();
-
-                              Navigator.of(ctx).pop();
-                            },
-                            child: Text(
-                              'OK',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'Total Cost : $totalCost \$',
+                      style: GoogleFonts.alef(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: Text(
+                              'Purchase Details',
+                              style: GoogleFonts.alef(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22,
+                              ),
+                            ),
+                            content: Text(
+                              'You bought all product in the cart with a prixe of "$totalCost \$" .',
                               style: GoogleFonts.alef(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18,
                               ),
                             ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  cartProducts.forEach((pro, times) {
+                                    userBuying(pro, times);
+                                    userTranscation(
+                                        DateTime.now(),
+                                        FirebaseAuth
+                                            .instance.currentUser!.email!,
+                                        pro.name,
+                                        times);
+                                  });
+                                  ref
+                                      .read(cartProvider.notifier)
+                                      .removeAllProducts();
+
+                                  Navigator.of(ctx).pop();
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: GoogleFonts.alef(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.8),
+                        foregroundColor: Colors.white,
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: Text(
-                    'Buy All Now',
-                    style: GoogleFonts.alef(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      child: Text(
+                        'Buy All Now',
+                        style: GoogleFonts.alef(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
@@ -294,5 +314,31 @@ class CartScreen extends ConsumerWidget {
     } catch (error) {
       log("Error updating product: $error");
     }
+  }
+
+  void userTranscation(
+    DateTime date,
+    String userEmail,
+    String productName,
+    int quantity,
+  ) {
+    final url = Uri.https('mobile-app-e112c-default-rtdb.firebaseio.com',
+        'transaction-list.json');
+    http
+        .post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'productName': productName,
+        'userEmail': userEmail,
+        'quantity': quantity,
+        'date': date.toIso8601String(),
+      }),
+    )
+        .then((res) {
+      if (res.statusCode == 200) {
+        log('transaction done');
+      }
+    });
   }
 }
